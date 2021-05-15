@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSS -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="<?php echo URL; ?>css/style.css" rel="stylesheet">
 </head>
 <body>
@@ -20,5 +22,4 @@
         <a href="<?php echo URL; ?>">home</a>
         <a href="<?php echo URL; ?>user/login">belépés</a>
         <a href="<?php echo URL; ?>user/register">regisztrálás</a>
-        <a href="<?php echo URL; ?>songs">songs</a>
     </div>
