@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container mx-auto">
     <h2>regisztrálás</h2>
     <form action="<?php echo URL; ?>user/register" method="POST">
 
@@ -35,9 +35,20 @@
                 <label for="password">Jelszó</label>
                 <input type="password" name="password" id="password" class="form-control">
                 <small id="passwordHelpBlock" class="form-text text-muted">
-                    A jelszónak legalább 8, maximum 20 karakter hosszúnak kell lennie.
+                    A jelszónak legalább 6, maximum 20 karakter hosszúnak kell lennie.
                 </small>
             </div>
+            <?php
+            if(isset($_SESSION['register_form_error']['passwords_missmatch'])){
+                if($_SESSION['register_form_error']['passwords_missmatch']){
+            ?>
+                    <div class="alert alert-danger" role="alert">
+                        A két jelszó nem eggyezik meg.
+                    </div>
+            <?php
+                }
+            }
+            ?>
 
             <div class="col-md-6 mb-3">
                 <label for="passwordAgain">Újra</label>
@@ -48,12 +59,12 @@
         <hr class="mb-4">
 
         <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" name="aszf" id="aszf">
-            <label class="custom-control-label" for="aszf">Elfogadom az Általános szerződési feltételeket.</label>
+            <input type="checkbox" class="custom-control-input" name="terms" id="terms" required>
+            <label class="custom-control-label" for="terms">Elfogadom az Általános szerződési feltételeket.</label>
         </div>
 
         <hr class="mb-4">
 
-        <button class="btn btn-primary btn-lg btn-block" name="submit_register" type="submit">Regisztrálás</button>
+        <button class="btn btn-primary btn-lg btn-block col-8 mx-auto" name="submit_register" type="submit">Regisztrálás</button>
     </form>
 </div>

@@ -3,7 +3,7 @@
 /**
  * Class UserModel
  */
-class UserModel
+class UserModel extends Model
 {
     /**
      * @var int
@@ -35,8 +35,44 @@ class UserModel
      */
     private $pass;
 
+    /**
+     * @var bool
+     */
+    private $admin;
+
     public function __construct(){
 
+    }
+
+    public function newUser($firstName, $lastName, $email, $phone, $pass){
+
+        $this->setFirstName($firstName);
+        $this->setLastName($lastName);
+        $this->setEmail($email);
+        $this->setPhone($phone);
+        $this->setPass(password_hash($pass, PASSWORD_DEFAULT));
+
+        $this->save();
+    }
+
+    public function save(){
+        $db = parent::connect();
+        $sql = "INSERT INTO user (first_name, last_name, email, phone, pass, admin, created_at)
+                VALUES (:first_name, :last_name, :email, :phone, :pass, :admin, :created_at)";
+
+        $query = $db->prepare($sql);
+
+        $parameters = [
+            ':first_name' => $this->firstName,
+            ':last_name' => $this->lastName,
+            ':email' => $this->email,
+            ':phone' => $this->phone,
+            ':pass' => $this->pass,
+            ':admin' => 0,
+            ':created_at' => date("Y-m-d h:i:s"),
+        ];
+
+        $query->execute($parameters);
     }
 
     /**
@@ -108,6 +144,38 @@ class UserModel
      */
     public function setPhone($phone){
         $this->phone = $phone;
+        return $this;
+    }
+
+    /**
+     * Get pass
+     * @return string
+     */
+    public function getPass(){
+        return $this->pass;
+    }
+
+    /**
+     * Set pass
+     */
+    public function setPass($pass){
+        $this->pass = $pass;
+        return $this;
+    }
+
+    /**
+     * Is admin
+     * @return bool
+     */
+    public function isAdmin(){
+        return $this->admin;
+    }
+
+    /**
+     * Set admin
+     */
+    public function setAdmin(){
+        $this->admin = true;
         return $this;
     }
 
