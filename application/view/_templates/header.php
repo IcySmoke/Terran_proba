@@ -19,7 +19,15 @@
 
     <!-- navigation -->
     <div class="navigation">
-        <a href="<?php echo URL; ?>">home</a>
-        <a href="<?php echo URL; ?>user/login">belépés</a>
+        <a href="<?php echo URL; ?>">bejelentkezés</a>
         <a href="<?php echo URL; ?>user/register">regisztrálás</a>
     </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link <?php if($_SERVER['REQUEST_URI'] == '/user/login'){ ?>active<?php } ?>" href="<?php echo URL; ?>">Bejelentkezés</a>
+                <a class="nav-item nav-link <?php if($_SERVER['REQUEST_URI'] == '/user/register'){ ?>active<?php } ?>" href="<?php echo URL; ?>user/register">Regisztrálás</a>
+            </div>
+        </div>
+    </nav>

@@ -1,4 +1,5 @@
 <?php
+require APP . "core/model.php";
 
 /**
  * Class UserModel
@@ -52,13 +53,13 @@ class UserModel extends Model
         $this->setPhone($phone);
         $this->setPass(password_hash($pass, PASSWORD_DEFAULT));
 
-        $this->save();
+        return $this->save();
     }
 
     public function save(){
         $db = parent::connect();
-        $sql = "INSERT INTO user (first_name, last_name, email, phone, pass, admin, created_at)
-                VALUES (:first_name, :last_name, :email, :phone, :pass, :admin, :created_at)";
+        $sql = "INSERT INTO user (first_name, last_name, email, phone, pass, admin, status, created_at)
+                VALUES (:first_name, :last_name, :email, :phone, :pass, :admin, :status, :created_at)";
 
         $query = $db->prepare($sql);
 
@@ -69,10 +70,12 @@ class UserModel extends Model
             ':phone' => $this->phone,
             ':pass' => $this->pass,
             ':admin' => 0,
+            ':status' => 1,
             ':created_at' => date("Y-m-d h:i:s"),
         ];
 
-        $query->execute($parameters);
+        return $query->execute($parameters);
+
     }
 
     /**
@@ -129,6 +132,43 @@ class UserModel extends Model
     public function setEmail($email){
         $this->email = $email;
         return $this;
+    }
+
+    /**
+     * find all
+     * @param null $columns
+     * @return array
+     */
+    public static function findAll($columns = null){
+        $db = parent::connect();
+
+        if($columns){
+            $sql = "SELECT " . implode(', ', $columns) . " FROM user";
+        }else{
+            $sql = "SELECT * FROM user";
+        }
+        $query = $db->prepare($sql);
+        $query->execute();
+
+        return $query->fetchAll();
+    }
+
+    public static function findOneBy($column, $value){
+        $db = parent::connect();
+
+        $sql = "SELECT * FROM user WHERE $column = '$value'";
+
+        $query = $db->prepare($sql);
+        $query->execute();
+
+        $res = $query->fetchAll();
+
+        if($res){
+            return $res[0];
+        }
+
+        return false;
+
     }
 
     /**

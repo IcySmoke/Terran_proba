@@ -11,8 +11,30 @@ class user extends Controller
      */
     public function login()
     {
+        if(isset($_SESSION['user'])){
+            header('location: ' . URL . 'car');
+        }
+
+        require APP . "model/user.php";
+
+        if(isset($_POST['submit_login'])){
+
+            $user = UserModel::findOneBy('email', $_POST['email']);
+
+            if(!$user){
+                $_SESSION['login_form_error']['email'] = true;
+            }elseif(!password_verify($_POST['password'], $user->pass)){
+                $_SESSION['login_form_error']['password'] = true;
+            }else{
+                unset($_POST);
+                $_SESSION['user'] = $user->email;
+                $_SESSION['admin'] = $user->admin;
+                header('location: ' . URL . 'car');
+            }
+        }
+
         // load views
-        require APP . 'view/_templates/user_header.php';
+        require APP . 'view/_templates/header.php';
         require APP . 'view/user/login.php';
         require APP . 'view/_templates/footer.php';
     }
@@ -23,6 +45,10 @@ class user extends Controller
      */
     public function register()
     {
+        if(isset($_SESSION['user'])){
+            header('location: ' . URL . 'car');
+        }
+
         if(isset($_POST['submit_register'])){
             require APP . "model/user.php";
             $_SESSION['register_form_error'] = null;
@@ -39,6 +65,13 @@ class user extends Controller
                 $_SESSION['register_form_error']['emial_missing'] = true;
             }elseif(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
                 $_SESSION['register_form_error']['emial_invalidFormat'] = true;
+            }else{
+                foreach(UserModel::findAll(['email']) as $row){
+                    if($_POST['email'] == $row->email){
+                        $_SESSION['register_form_error']['emial_exists'] = true;
+                        break;
+                    }
+                }
             }
 
             //TODO phone regex check in else statement
@@ -62,7 +95,13 @@ class user extends Controller
             if($_SESSION['register_form_error'] == null){
                 $user = new UserModel();
 
-                $user->newUser($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['phone'], $_POST['password']);
+                $res = $user->newUser($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['phone'], $_POST['password']);
+
+                if($res){
+                    $_SESSION['user'] = $user->getEmail();
+                    $_SESSION['admin'] = $user->isAdmin();
+                    header('location: ' . URL . 'car');
+                }
 
             }
 
@@ -74,4 +113,19 @@ class user extends Controller
         require APP . 'view/user/register.php';
         require APP . 'view/_templates/footer.php';
     }
+
+    /**
+     * PAGE: logout
+     * ROUTE: /user/logout
+     */
+    public function logout()
+    {
+
+        if(isset($_SESSION['user'])){
+            $_SESSION = [];
+        }
+
+        header('location: ' . URL);
+    }
+
 }
