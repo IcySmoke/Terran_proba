@@ -1,6 +1,5 @@
-<div class="container">
-    <h2>LOGIN</h2>
-
+<div  class="container mx-auto">
+    <h2>Bejelentkezés</h2>
     <form action="<?php echo URL; ?>user/login" method="POST">
 
         <div class="form-group">
@@ -38,8 +37,7 @@
         }
         ?>
 
-        <button class="btn btn-primary btn-lg btn-block col-8 mx-auto" name="submit_login" type="submit">Belépés</button>
+        <button class="btn btn-outline-light btn-lg btn-block col-8 mx-auto" name="submit_login" type="submit">Belépés</button>
 
     </form>
-
 </div>

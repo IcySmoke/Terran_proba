@@ -12,22 +12,14 @@
     <link href="<?php echo URL; ?>css/style.css" rel="stylesheet">
 </head>
 <body>
-    <!-- logo -->
-    <div class="logo">
-        FLOTTA
-    </div>
 
-    <!-- navigation -->
-    <div class="navigation">
-        <a href="<?php echo URL; ?>">bejelentkezés</a>
-        <a href="<?php echo URL; ?>user/register">regisztrálás</a>
-    </div>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link <?php if($_SERVER['REQUEST_URI'] == '/user/login'){ ?>active<?php } ?>" href="<?php echo URL; ?>">Bejelentkezés</a>
-                <a class="nav-item nav-link <?php if($_SERVER['REQUEST_URI'] == '/user/register'){ ?>active<?php } ?>" href="<?php echo URL; ?>user/register">Regisztrálás</a>
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column col-xl-12">
+        <header class="masthead mb-auto">
+            <div class="inner">
+                <h3 class="masthead-brand">Flotta</h3>
+                <nav class="nav nav-masthead justify-content-center">
+                    <a class="nav-link <?php if($_SERVER['REQUEST_URI'] == '/user/login'){ ?>active<?php } ?>" href="<?php echo URL; ?>">Bejelentkezés</a>
+                    <a class="nav-link <?php if($_SERVER['REQUEST_URI'] == '/user/register'){ ?>active<?php } ?>" href="<?php echo URL; ?>user/register">Regisztrálás</a>
+                </nav>
             </div>
-        </div>
-    </nav>
+        </header>
