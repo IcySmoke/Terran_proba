@@ -1,5 +1,5 @@
 <?php
-require APP . "core/model.php";
+//require APP . "core/model.php";
 
 /**
  * Class UserModel
@@ -153,6 +153,11 @@ class UserModel extends Model
         return $query->fetchAll();
     }
 
+    /**
+     * @param $column
+     * @param $value
+     * @return false|mixed
+     */
     public static function findOneBy($column, $value){
         $db = parent::connect();
 
@@ -168,7 +173,6 @@ class UserModel extends Model
         }
 
         return false;
-
     }
 
     /**
