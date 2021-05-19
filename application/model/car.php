@@ -134,10 +134,20 @@ class CarModel extends Model
      * @param $value
      * @return false|mixed
      */
-    public static function findBy($column, $value){
+    public static function findBy($filter){
         $db = parent::connect();
 
-        $sql = "SELECT * FROM car WHERE $column = '$value'";
+        $keys = [];
+        $values = [];
+
+        $sql = "SELECT * FROM car WHERE user = " . $filter['user'];
+
+        if(count($filter) > 1){
+            unset($filter['user']);
+            foreach($filter as $key=>$value){
+                $sql .= " AND " . $key . " LIKE '%" . $value . "%'";
+            }
+        }
 
         $query = $db->prepare($sql);
         $query->execute();

@@ -17,7 +17,23 @@ class car extends Controller
         require APP . "model/car.php";
         require APP . "model/user.php";
 
-        $cars = CarModel::findBy('user', UserModel::findOneBy('email', $_SESSION['user'])->id);
+        $filter = [
+            'user' => UserModel::findOneBy('email', $_SESSION['user'])->id,
+        ];
+
+        if(isset($_POST['filter_brand'])){
+            $filter += [
+                'brand' => $_POST['filter_brand'],
+            ];
+        }
+
+        if(isset($_POST['filter_plate'])){
+            $filter += [
+              'plate' => $_POST['filter_plate']
+            ];
+        }
+
+        $cars = CarModel::findBy($filter);
 
         // load views
         require APP . 'view/_templates/user_header.php';
