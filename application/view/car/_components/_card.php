@@ -5,6 +5,8 @@
     <div class="card-body">
         <h5 class="card-title"><?= $car->kilometers ?> km</h5>
         <h5 class="card-title"><?= $car->year ?></h5>
-        <button type="button" class="btn btn-light">Részletek</button>
+        <a href="<?php echo URL; ?>car/edit?id=<?php echo $car->id ?>">
+            <button type="button" class="btn btn-light">Részletek</button>
+        </a>
     </div>
 </div>

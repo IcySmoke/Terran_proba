@@ -16,12 +16,12 @@
 
         <div class="form-group">
             <label for="brand">Típus</label>
-            <input type="text" class="form-control" name="brand" id="brand" placeholder="Típus">
+            <input type="text" class="form-control" name="brand" id="brand" placeholder="Típus" required>
         </div>
 
         <div class="form-group">
             <label for="plate">Rendszám</label>
-            <input type="text" class="form-control" name="plate" id="plate" placeholder="ABC-123">
+            <input type="text" class="form-control" name="plate" id="plate" placeholder="ABC-123" required>
         </div>
 
         <div class="row">

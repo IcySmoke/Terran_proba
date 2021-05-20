@@ -41,6 +41,43 @@ class car extends Controller
         require APP . 'view/_templates/footer.php';
     }
 
+    public function edit(){
+
+        if(!isset($_GET['id'])){
+            header('location: ' . URL);
+        }
+
+        if(!is_numeric($_GET['id'])){
+            header('location: ' . URL);
+        }
+
+        require APP . "model/car.php";
+
+        $res = CarModel::findOneBy('id', $_GET['id']);
+        if(!$res){
+            header('location: ' . URL);
+        }
+
+        $car = new CarModel(CarModel::findOneBy('id', $_GET['id']));
+
+        if(isset($_POST['submit_editCar'])){
+            $car->setBrand($_POST['brand']);
+            $car->setPlate($_POST['plate']);
+            $car->setKilometers($_POST['kilometers']);
+            $car->setYear($_POST['year']);
+            $car->setStatus(isset($_POST['status']));
+
+            $car->update();
+        }
+
+
+
+        // load views
+        require APP . 'view/_templates/user_header.php';
+        require APP . 'view/car/edit.php';
+        require APP . 'view/_templates/footer.php';
+    }
+
     public function add(){
 
         if(isset($_POST['submit_addCar'])){

@@ -51,8 +51,17 @@ class CarModel extends Model
      */
     private $updatedAt;
 
-    public function __construct(){
+    public function __construct($car = null){
+        if($car){
 
+            $this->setBrand($car->brand);
+            $this->setPlate($car->plate);
+            $this->setKilometers($car->kilometers);
+            $this->setYear($car->year);
+            $this->setStatus($car->status);
+            $this->setUser($car->user);
+
+        }
     }
 
     public function newCar($barnd, $plate, $kilometers, $year, $status, $user){
@@ -64,10 +73,6 @@ class CarModel extends Model
         $this->setStatus($status);
         $this->setUser($user);
 
-        return $this->save();
-    }
-
-    public function save(){
         $db = parent::connect();
         $sql = "INSERT INTO car (brand, plate, kilometers, year, status, user, created_at)
                 VALUES (:brand, :plate, :kilometers, :year, :status, :user, :created_at)";
@@ -82,6 +87,28 @@ class CarModel extends Model
             ':status' => $this->status,
             ':user' => $this->user,
             ':created_at' => date("Y-m-d h:i:s"),
+        ];
+
+        return $query->execute($parameters);
+    }
+
+    public function update(){
+        $db = parent::connect();
+        $sql = "UPDATE car
+                SET brand = :brand, plate = :plate, kilometers = :kilometers, year = :year, status = :status, user = :user, updated_at = :updated_at
+                WHERE id = :id";
+
+        $query = $db->prepare($sql);
+
+        $parameters = [
+            ':brand' => $this->brand,
+            ':plate' => $this->plate,
+            ':kilometers' => $this->kilometers,
+            ':year' => $this->year,
+            ':status' => $this->status,
+            ':user' => $this->user,
+            ':updated_at' => date("Y-m-d h:i:s"),
+            'id' => $_GET['id'],
         ];
 
         return $query->execute($parameters);
