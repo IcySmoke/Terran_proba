@@ -53,10 +53,6 @@ class UserModel extends Model
         $this->setPhone($phone);
         $this->setPass(password_hash($pass, PASSWORD_DEFAULT));
 
-        return $this->save();
-    }
-
-    public function save(){
         $db = parent::connect();
         $sql = "INSERT INTO user (first_name, last_name, email, phone, pass, admin, status, created_at)
                 VALUES (:first_name, :last_name, :email, :phone, :pass, :admin, :status, :created_at)";
@@ -74,7 +70,30 @@ class UserModel extends Model
             ':created_at' => date("Y-m-d h:i:s"),
         ];
 
-        return $query->execute($parameters);
+        $res = $query->execute($parameters);
+        $this->setId($db->lastInsertId());
+        return $res;
+    }
+
+    public function save(){
+//        $db = parent::connect();
+//        $sql = "INSERT INTO user (first_name, last_name, email, phone, pass, admin, status, created_at)
+//                VALUES (:first_name, :last_name, :email, :phone, :pass, :admin, :status, :created_at)";
+//
+//        $query = $db->prepare($sql);
+//
+//        $parameters = [
+//            ':first_name' => $this->firstName,
+//            ':last_name' => $this->lastName,
+//            ':email' => $this->email,
+//            ':phone' => $this->phone,
+//            ':pass' => $this->pass,
+//            ':admin' => 0,
+//            ':status' => 1,
+//            ':created_at' => date("Y-m-d h:i:s"),
+//        ];
+//
+//        return $query->execute($parameters);
 
     }
 
@@ -84,6 +103,15 @@ class UserModel extends Model
      */
     public function getId(){
         return $this->id;
+    }
+
+    /**
+     * @param $id
+     * @return $this
+     */
+    public function setId($id){
+        $this->id = $id;
+        return $this;
     }
 
     /**

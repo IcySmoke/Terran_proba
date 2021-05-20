@@ -54,11 +54,11 @@ class car extends Controller
         require APP . "model/car.php";
 
         $res = CarModel::findOneBy('id', $_GET['id']);
-        if(!$res){
+        if(!$res || $res->user != $_SESSION['userId']){
             header('location: ' . URL);
         }
 
-        $car = new CarModel(CarModel::findOneBy('id', $_GET['id']));
+        $car = new CarModel($res);
 
         if(isset($_POST['submit_editCar'])){
             $car->setBrand($_POST['brand']);
@@ -106,6 +106,7 @@ class car extends Controller
                     isset($_POST['status']),
                     UserModel::findOneBy('email', $_SESSION['user'])->id
                 );
+                header('location: ' . URL . 'car');
             }
 
         }
@@ -115,5 +116,26 @@ class car extends Controller
         require APP . 'view/car/add.php';
         require APP . 'view/_templates/footer.php';
 
+    }
+
+    public function delete(){
+        if(!isset($_GET['id'])){
+            header('location: ' . URL);
+        }
+
+        if(!is_numeric($_GET['id'])){
+            header('location: ' . URL);
+        }
+
+        require APP . "model/car.php";
+
+        $res = CarModel::findOneBy('id', $_GET['id']);
+        if(!$res || $res->user != $_SESSION['userId']){
+            header('location: ' . URL);
+        }
+
+        CarModel::delete($res->id);
+
+        header('location: ' . URL);
     }
 }

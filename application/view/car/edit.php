@@ -14,6 +14,9 @@
             </a>
         </div>
     </div>
+    <a href="<?php echo URL; ?>car/delete/?id=<?php echo $_GET['id'] ?>">
+        <button type="button" class="btn btn-danger">autó törlése</button>
+    </a>
 
     <form action="<?php echo URL; ?>car/edit?id=<?php echo $_GET['id'] ?>" method="POST">
 

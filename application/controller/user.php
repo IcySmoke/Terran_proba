@@ -27,6 +27,7 @@ class user extends Controller
                 $_SESSION['login_form_error']['password'] = true;
             }else{
                 unset($_POST);
+                $_SESSION['userId'] = $user->id;
                 $_SESSION['user'] = $user->email;
                 $_SESSION['admin'] = $user->admin;
                 header('location: ' . URL . 'car');
@@ -98,6 +99,7 @@ class user extends Controller
                 $res = $user->newUser($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['phone'], $_POST['password']);
 
                 if($res){
+                    $_SESSION['userId'] = $user->getId();
                     $_SESSION['user'] = $user->getEmail();
                     $_SESSION['admin'] = $user->isAdmin();
                     header('location: ' . URL . 'car');

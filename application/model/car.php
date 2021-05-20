@@ -114,6 +114,14 @@ class CarModel extends Model
         return $query->execute($parameters);
 
     }
+    public static function delete($id){
+        $db = parent::connect();
+        $sql = "DELETE FROM car WHERE id = :id";
+        $query = $db->prepare($sql);
+        $parameters = array(':id' => $id);
+
+        $query->execute($parameters);
+    }
 
     /**
      * find all
