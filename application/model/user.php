@@ -1,10 +1,9 @@
 <?php
-//require APP . "core/model.php";
 
 /**
  * Class UserModel
  */
-class UserModel extends Model
+class UserModel
 {
     /**
      * @var int
@@ -59,6 +58,18 @@ class UserModel extends Model
         }
     }
 
+    private static function connect(){
+        try {
+            // set the optional options of the PDO connection. fetch mode to objects
+            $options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING);
+
+            // generate a database connection, using the PDO connector
+            return new PDO(DB_TYPE . ':host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET, DB_USER, DB_PASS, $options);
+        } catch (PDOException $e) {
+            exit('Database connection could not be established.');
+        }
+    }
+
     public function newUser($firstName, $lastName, $email, $phone, $pass){
 
         $this->setFirstName($firstName);
@@ -67,7 +78,7 @@ class UserModel extends Model
         $this->setPhone($phone);
         $this->setPass(password_hash($pass, PASSWORD_DEFAULT));
 
-        $db = parent::connect();
+        $db = $this->connect();
         $sql = "INSERT INTO user (first_name, last_name, email, phone, pass, admin, status, created_at)
                 VALUES (:first_name, :last_name, :email, :phone, :pass, :admin, :status, :created_at)";
 
@@ -90,7 +101,7 @@ class UserModel extends Model
     }
 
     public function update(){
-        $db = parent::connect();
+        $db = $this->connect();
         $sql = "UPDATE user
                 SET first_name = :first_name, last_name = :last_name, email = :email, phone = :phone, admin = :admin, status = :status, updated_at = :updated_at
                 WHERE id = :id";
@@ -112,8 +123,17 @@ class UserModel extends Model
 
     }
 
+    public static function delete($id){
+        $db = self::connect();
+        $sql = "DELETE FROM user WHERE id = :id";
+        $query = $db->prepare($sql);
+        $parameters = array(':id' => $id);
+
+        $query->execute($parameters);
+    }
+
     public function updatePass($pass){
-        $db = parent::connect();
+        $db = self::connect();
         $sql = "UPDATE user
                 SET pass = :pass
                 WHERE id = :id";
@@ -199,7 +219,7 @@ class UserModel extends Model
      * @return array
      */
     public static function findAll($columns = null){
-        $db = parent::connect();
+        $db = self::connect();
 
         if($columns){
             $sql = "SELECT " . implode(', ', $columns) . " FROM user";
@@ -218,7 +238,7 @@ class UserModel extends Model
      * @return false|mixed
      */
     public static function findOneBy($column, $value){
-        $db = parent::connect();
+        $db = self::connect();
 
         $sql = "SELECT * FROM user WHERE $column = '$value'";
 

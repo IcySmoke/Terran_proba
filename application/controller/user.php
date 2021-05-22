@@ -259,4 +259,39 @@ class user extends Controller
 
     }
 
+    public function delete(){
+        if(!isset($_SESSION['admin'])){
+            header('location: ' . URL . 'car');
+        }
+
+        if(!$_SESSION['admin']){
+            header('location: ' . URL . 'car');
+        }
+
+        require APP . "model/user.php";
+
+        $user = UserModel::findOneBy('id', $_GET['id']);
+
+        if(!$user){
+            header('location: ' . URL . 'user');
+        }
+
+        require APP . "model/car.php";
+
+        $cars = CarModel::findBy(
+            [
+                'user' => $_GET['id'],
+            ]
+        );
+
+//        if($cars){
+//            var_dump($user->first_name . "-hez tartozik " . count($cars) . "db autó!"); exit;
+//        }
+
+        UserModel::delete($user->id);
+
+        header('location: ' . URL . 'user');
+
+    }
+
 }
