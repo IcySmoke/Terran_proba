@@ -105,7 +105,7 @@ class UserModel extends Model
             ':admin' => $this->admin,
             ':status' => $this->status,
             ':updated_at' => date("Y-m-d h:i:s"),
-            'id' => $_GET['id'],
+            'id' => $this->id,
         ];
 
         return $query->execute($parameters);
