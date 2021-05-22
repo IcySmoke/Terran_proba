@@ -30,10 +30,11 @@
             <div class="col-md-3 mb-3">
                 <label for="user">Autó használója</label>
                 <select class="custom-select d-block col-md-10" name="filter_user" id="user">
+                    <option value="0">Mindenki</option>
                     <?php
                     foreach($users as $user){
                     ?>
-                        <option value="<?php echo $user->id ?>" <?php if($user->id == (isset($_POST['filter_user'])?$_POST['filter_user']:$_SESSION['userId'])){ ?>selected<?php } ?>><?php echo $user->last_name ?> <?php echo $user->first_name ?></option>
+                        <option value="<?php echo $user->id ?>" <?php if($user->id == (isset($_POST['filter_user'])?$_POST['filter_user']:-1)){ ?>selected<?php } ?>><?php echo $user->last_name ?> <?php echo $user->first_name ?></option>
                     <?php
                     }
                     ?>

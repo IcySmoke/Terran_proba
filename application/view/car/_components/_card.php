@@ -5,6 +5,9 @@
     <div class="card-body">
         <h5 class="card-title"><?= $car->kilometers ?> km</h5>
         <h5 class="card-title"><?= $car->year ?></h5>
+        <?php if($_SESSION['admin']){ ?>
+            <h5 class="card-title">Felhasználó: <?= $car->user ?></h5>
+        <?php } ?>
         <a href="<?php echo URL; ?>car/edit?id=<?php echo $car->id ?>">
             <button type="button" class="btn btn-light">Részletek</button>
         </a>

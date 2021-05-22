@@ -31,11 +31,11 @@ class car extends Controller
 
             if(isset($_POST['filter_user'])){
                 $filter = [
-                    'user' => UserModel::findOneBy('id', $_POST['filter_user'])->id,
+                    'user' => $_POST['filter_user']==0?0:UserModel::findOneBy('id', $_POST['filter_user'])->id,
                 ];
             }else{
                 $filter = [
-                    'user' => UserModel::findOneBy('id', $_SESSION['userId'])->id,
+                    'user' => 0,
                 ];
             }
         }else{
@@ -58,8 +58,11 @@ class car extends Controller
 
         $cars = CarModel::findBy($filter);
 
+        foreach($cars as $key=>$car){
+            $user = UserModel::findOneBy('id', $car->user);
+            $cars[$key]->user = $user->last_name . ' ' . $user->first_name;
+        }
 
-        var_dump(isset($_POST['filter_user'])?$_POST['filter_user']:$_SESSION['userId']);
         // load views
         if($_SESSION['admin']){
             require APP . 'view/_templates/admin_header.php';

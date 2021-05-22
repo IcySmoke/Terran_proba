@@ -184,7 +184,11 @@ class CarModel
     public static function findBy($filter){
         $db = self::connect();
 
-        $sql = "SELECT * FROM car WHERE user = " . $filter['user'];
+        if($filter['user'] == 0){
+            $sql = "SELECT * FROM car WHERE 1";
+        }else {
+            $sql = "SELECT * FROM car WHERE user = " . $filter['user'];
+        }
 
         if(count($filter) > 1){
             unset($filter['user']);
