@@ -60,7 +60,12 @@ class car extends Controller
 
         foreach($cars as $key=>$car){
             $user = UserModel::findOneBy('id', $car->user);
-            $cars[$key]->user = $user->last_name . ' ' . $user->first_name;
+            if($user){
+                $cars[$key]->user = $user->last_name . ' ' . $user->first_name;
+            }else{
+                $cars[$key]->user = "Senki";
+            }
+
         }
 
         // load views
@@ -86,7 +91,7 @@ class car extends Controller
         require APP . "model/car.php";
 
         $res = CarModel::findOneBy('id', $_GET['id']);
-        if(!$res || $res->user != $_SESSION['userId']){
+        if(!$res || $res->user != $_SESSION['userId'] && !$_SESSION['admin']){
             header('location: ' . URL);
         }
 
@@ -113,6 +118,15 @@ class car extends Controller
     }
 
     public function add(){
+        require APP . "model/user.php";
+
+        $users = UserModel::findAll(
+            [
+            'id',
+            'first_name',
+            'last_name',
+            ]
+        );
 
         if(isset($_POST['submit_addCar'])){
 
@@ -128,7 +142,6 @@ class car extends Controller
 
             if($_SESSION['newCar_error'] == null){
                 require APP . "model/car.php";
-                require APP . "model/user.php";
 
                 $car = new CarModel();
 
@@ -138,7 +151,7 @@ class car extends Controller
                     $_POST['kilometers'],
                     $_POST['year'],
                     isset($_POST['status'])?1:0,
-                    UserModel::findOneBy('email', $_SESSION['user'])->id
+                    isset($_POST['user'])?$_POST['user']:UserModel::findOneBy('email', $_SESSION['user'])->id
                 );
                 header('location: ' . URL . 'car');
             }
@@ -146,7 +159,11 @@ class car extends Controller
         }
 
         // load views
-        require APP . 'view/_templates/user_header.php';
+        if($_SESSION['admin']){
+            require APP . 'view/_templates/admin_header.php';
+        }else{
+            require APP . 'view/_templates/user_header.php';
+        }
         require APP . 'view/car/add.php';
         require APP . 'view/_templates/footer.php';
 

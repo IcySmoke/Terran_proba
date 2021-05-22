@@ -44,6 +44,19 @@
             </label>
         </div>
 
+        <div class="col-md-6 mb-3">
+            <label for="user">Autó használója</label>
+            <select class="custom-select d-block col-md-10" name="user" id="user">
+                <?php
+                foreach($users as $user){
+                    ?>
+                    <option value="<?php echo $user->id ?>" <?php if($user->id == $_SESSION['userId']){ ?>selected<?php } ?>><?php echo $user->last_name ?> <?php echo $user->first_name ?></option>
+                    <?php
+                }
+                ?>
+            </select>
+        </div>
+
         <hr class="mb-4">
 
         <button class="btn btn-outline-light btn-lg btn-block col-8 mx-auto" name="submit_addCar" type="submit">Mentés</button>
