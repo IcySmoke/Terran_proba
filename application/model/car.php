@@ -1,10 +1,9 @@
 <?php
-require APP . "core/model.php";
 
 /**
  * Class car
  */
-class CarModel extends Model
+class CarModel
 {
     /**
      * @var int
@@ -64,6 +63,18 @@ class CarModel extends Model
         }
     }
 
+    private static function connect(){
+        try {
+            // set the optional options of the PDO connection. fetch mode to objects
+            $options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING);
+
+            // generate a database connection, using the PDO connector
+            return new PDO(DB_TYPE . ':host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET, DB_USER, DB_PASS, $options);
+        } catch (PDOException $e) {
+            exit('Database connection could not be established.');
+        }
+    }
+
     public function newCar($barnd, $plate, $kilometers, $year, $status, $user){
 
         $this->setBrand($barnd);
@@ -73,7 +84,7 @@ class CarModel extends Model
         $this->setStatus($status);
         $this->setUser($user);
 
-        $db = parent::connect();
+        $db = $this->connect();
         $sql = "INSERT INTO car (brand, plate, kilometers, year, status, user, created_at)
                 VALUES (:brand, :plate, :kilometers, :year, :status, :user, :created_at)";
 
@@ -93,7 +104,7 @@ class CarModel extends Model
     }
 
     public function update(){
-        $db = parent::connect();
+        $db = $this->connect();
         $sql = "UPDATE car
                 SET brand = :brand, plate = :plate, kilometers = :kilometers, year = :year, status = :status, user = :user, updated_at = :updated_at
                 WHERE id = :id";
@@ -114,8 +125,9 @@ class CarModel extends Model
         return $query->execute($parameters);
 
     }
+
     public static function delete($id){
-        $db = parent::connect();
+        $db = self::connect();
         $sql = "DELETE FROM car WHERE id = :id";
         $query = $db->prepare($sql);
         $parameters = array(':id' => $id);
@@ -129,7 +141,7 @@ class CarModel extends Model
      * @return array
      */
     public static function findAll($columns = null){
-        $db = parent::connect();
+        $db = self::connect();
 
         if($columns){
             $sql = "SELECT " . implode(', ', $columns) . " FROM car";
@@ -148,7 +160,7 @@ class CarModel extends Model
      * @return false|mixed
      */
     public static function findOneBy($column, $value){
-        $db = parent::connect();
+        $db = self::connect();
 
         $sql = "SELECT * FROM car WHERE $column = '$value'";
 
@@ -170,10 +182,7 @@ class CarModel extends Model
      * @return false|mixed
      */
     public static function findBy($filter){
-        $db = parent::connect();
-
-        $keys = [];
-        $values = [];
+        $db = self::connect();
 
         $sql = "SELECT * FROM car WHERE user = " . $filter['user'];
 

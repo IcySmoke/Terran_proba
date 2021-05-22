@@ -13,15 +13,38 @@
     </div>
 
     <form class="form-inline" action="<?php echo URL; ?>car" method="POST">
-        <div class="form-group mb-2">
-            <label for="brand" class="sr-only">Típus</label>
-            <input type="text" class="form-control" name="filter_brand" id="brand" placeholder="Típus" value="<?= isset($_POST['filter_brand']) ? $_POST['filter_brand'] : "" ?>">
+
+        <div class="col-md-3 mb-3">
+            <label for="brand">Típus</label>
+            <input type="text" class="form-control col-md-10" name="filter_brand" id="brand" placeholder="Típus" value="<?= isset($_POST['filter_brand']) ? $_POST['filter_brand'] : "" ?>">
         </div>
-        <div class="form-group mx-sm-3 mb-2">
-            <label for="plate" class="sr-only">Rendszám</label>
-            <input type="text" class="form-control" name="filter_plate" id="plate" placeholder="Rendszám" value="<?= isset($_POST['filter_plate']) ? $_POST['filter_plate'] : "" ?>">
+
+        <div class="col-md-3 mb-3">
+            <label for="plate">Rendszám</label>
+            <input type="text" class="form-control col-md-10" name="filter_plate" id="plate" placeholder="Rendszám" value="<?= isset($_POST['filter_plate']) ? $_POST['filter_plate'] : "" ?>">
         </div>
+
+        <?php
+        if($_SESSION['admin']){
+        ?>
+            <div class="col-md-3 mb-3">
+                <label for="user">Autó használója</label>
+                <select class="custom-select d-block col-md-10" name="filter_user" id="user">
+                    <?php
+                    foreach($users as $user){
+                    ?>
+                        <option value="<?php echo $user->id ?>" <?php if($user->id == (isset($_POST['filter_user'])?$_POST['filter_user']:$_SESSION['userId'])){ ?>selected<?php } ?>><?php echo $user->last_name ?> <?php echo $user->first_name ?></option>
+                    <?php
+                    }
+                    ?>
+                </select>
+            </div>
+        <?php
+        }
+        ?>
+
         <button type="submit" class="btn btn-primary mb-2" name="submit_filter">Szűrés</button>
+
     </form>
 
     <div class="row m-4">

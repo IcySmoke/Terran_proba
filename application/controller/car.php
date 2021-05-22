@@ -17,9 +17,32 @@ class car extends Controller
         require APP . "model/car.php";
         require APP . "model/user.php";
 
-        $filter = [
-            'user' => UserModel::findOneBy('email', $_SESSION['user'])->id,
-        ];
+
+        if($_SESSION['admin']){
+            $users = UserModel::findAll(['id', 'last_name', 'first_name']);
+
+            foreach($users as $key=>$user){
+                if($user->id == $_SESSION['userId']){
+                    $currentUser = $user;
+                    unset($users[$key]);
+                    array_unshift($users, $currentUser);
+                }
+            }
+
+            if(isset($_POST['filter_user'])){
+                $filter = [
+                    'user' => UserModel::findOneBy('id', $_POST['filter_user'])->id,
+                ];
+            }else{
+                $filter = [
+                    'user' => UserModel::findOneBy('id', $_SESSION['userId'])->id,
+                ];
+            }
+        }else{
+            $filter = [
+                'user' => UserModel::findOneBy('id', $_SESSION['userId'])->id,
+            ];
+        }
 
         if(isset($_POST['filter_brand'])){
             $filter += [
@@ -35,6 +58,8 @@ class car extends Controller
 
         $cars = CarModel::findBy($filter);
 
+
+        var_dump(isset($_POST['filter_user'])?$_POST['filter_user']:$_SESSION['userId']);
         // load views
         if($_SESSION['admin']){
             require APP . 'view/_templates/admin_header.php';
