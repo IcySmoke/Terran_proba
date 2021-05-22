@@ -41,8 +41,22 @@ class UserModel extends Model
      */
     private $admin;
 
-    public function __construct(){
+    /**
+     * @var bool
+     */
+    private $status;
 
+    public function __construct($user = null){
+        if($user){
+            $this->id = $user->id;
+            $this->setFirstName($user->first_name)
+                ->setLastName($user->last_name)
+                ->setEmail($user->email)
+                ->setPhone($user->phone)
+                ->setAdmin($user->admin)
+                ->setStatus($user->status)
+            ;
+        }
     }
 
     public function newUser($firstName, $lastName, $email, $phone, $pass){
@@ -75,26 +89,43 @@ class UserModel extends Model
         return $res;
     }
 
-    public function save(){
-//        $db = parent::connect();
-//        $sql = "INSERT INTO user (first_name, last_name, email, phone, pass, admin, status, created_at)
-//                VALUES (:first_name, :last_name, :email, :phone, :pass, :admin, :status, :created_at)";
-//
-//        $query = $db->prepare($sql);
-//
-//        $parameters = [
-//            ':first_name' => $this->firstName,
-//            ':last_name' => $this->lastName,
-//            ':email' => $this->email,
-//            ':phone' => $this->phone,
-//            ':pass' => $this->pass,
-//            ':admin' => 0,
-//            ':status' => 1,
-//            ':created_at' => date("Y-m-d h:i:s"),
-//        ];
-//
-//        return $query->execute($parameters);
+    public function update(){
+        $db = parent::connect();
+        $sql = "UPDATE user
+                SET first_name = :first_name, last_name = :last_name, email = :email, phone = :phone, admin = :admin, status = :status, updated_at = :updated_at
+                WHERE id = :id";
 
+        $query = $db->prepare($sql);
+
+        $parameters = [
+            ':first_name' => $this->firstName,
+            ':last_name' => $this->lastName,
+            ':email' => $this->email,
+            ':phone' => $this->phone,
+            ':admin' => $this->admin,
+            ':status' => $this->status,
+            ':updated_at' => date("Y-m-d h:i:s"),
+            'id' => $_GET['id'],
+        ];
+
+        return $query->execute($parameters);
+
+    }
+
+    public function updatePass($pass){
+        $db = parent::connect();
+        $sql = "UPDATE user
+                SET pass = :pass
+                WHERE id = :id";
+
+        $query = $db->prepare($sql);
+
+        $parameters = [
+            ':pass' => password_hash($pass, PASSWORD_DEFAULT),
+            ':id' => $_GET['id'],
+        ];
+
+        return $query->execute($parameters);
     }
 
     /**
@@ -244,12 +275,28 @@ class UserModel extends Model
     }
 
     /**
-     * Set admin
+     * @param $admin
+     * @return $this
      */
-    public function setAdmin(){
-        $this->admin = true;
+    public function setAdmin($admin){
+        $this->admin = $admin;
         return $this;
     }
 
+    /**
+     * @return bool
+     */
+    public function isActive(){
+        return $this->status;
+    }
+
+    /**
+     * @param $status
+     * @return $this
+     */
+    public function setStatus($status){
+        $this->status = $status;
+        return $this;
+    }
 
 }

@@ -36,7 +36,11 @@ class car extends Controller
         $cars = CarModel::findBy($filter);
 
         // load views
-        require APP . 'view/_templates/user_header.php';
+        if($_SESSION['admin']){
+            require APP . 'view/_templates/admin_header.php';
+        }else{
+            require APP . 'view/_templates/user_header.php';
+        }
         require APP . 'view/car/index.php';
         require APP . 'view/_templates/footer.php';
     }
@@ -61,11 +65,13 @@ class car extends Controller
         $car = new CarModel($res);
 
         if(isset($_POST['submit_editCar'])){
-            $car->setBrand($_POST['brand']);
-            $car->setPlate($_POST['plate']);
-            $car->setKilometers($_POST['kilometers']);
-            $car->setYear($_POST['year']);
-            $car->setStatus(isset($_POST['status']));
+            $car
+                ->setBrand($_POST['brand'])
+                ->setPlate($_POST['plate'])
+                ->setKilometers($_POST['kilometers'])
+                ->setYear($_POST['year'])
+                ->setStatus(isset($_POST['status']))
+            ;
 
             $car->update();
         }
@@ -103,7 +109,7 @@ class car extends Controller
                     $_POST['plate'],
                     $_POST['kilometers'],
                     $_POST['year'],
-                    isset($_POST['status']),
+                    isset($_POST['status'])?1:0,
                     UserModel::findOneBy('email', $_SESSION['user'])->id
                 );
                 header('location: ' . URL . 'car');
