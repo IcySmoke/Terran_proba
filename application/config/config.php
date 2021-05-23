@@ -24,7 +24,7 @@ define('URL', URL_PROTOCOL . URL_DOMAIN . URL_SUB_FOLDER);
  */
 define('DB_TYPE', 'mysql');
 define('DB_HOST', '127.0.0.1');
-define('DB_NAME', 'terran_proba');
+define('DB_NAME', 'flotta');
 define('DB_USER', 'root');
 define('DB_PASS', '654291');
 define('DB_CHARSET', 'utf8');
