@@ -4,7 +4,7 @@
  * Class Problem
  * Formerly named "Error", but as PHP 7 does not allow Error as class name anymore
  */
-class Problem extends Controller
+class Problem
 {
     /**
      * PAGE: index

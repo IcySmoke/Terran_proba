@@ -3,7 +3,7 @@
 /**
  * Class user
  */
-class user extends Controller
+class user
 {
     /**
      * PAGE: login
@@ -199,7 +199,9 @@ class user extends Controller
             if(isset($_POST['password'])){
                 if(isset($_POST['passwordAgain'])){
                     if($_POST['password'] == $_POST['passwordAgain']){
-                        $user->updatePass($_POST['password']);
+                        if($_POST['password'] != ''){
+                            $user->updatePass($_POST['password']);
+                        }
                     }else{
                         $_SESSION['edit_form_error']['passwords_missmatch'] = true;
                     }

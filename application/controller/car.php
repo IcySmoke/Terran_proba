@@ -3,7 +3,7 @@
 /**
  * Class car
  */
-class car extends Controller
+class car
 {
     public function __construct()
     {
@@ -58,14 +58,16 @@ class car extends Controller
 
         $cars = CarModel::findBy($filter);
 
-        foreach($cars as $key=>$car){
-            $user = UserModel::findOneBy('id', $car->user);
-            if($user){
-                $cars[$key]->user = $user->last_name . ' ' . $user->first_name;
-            }else{
-                $cars[$key]->user = "Senki";
-            }
+        if($_SESSION['admin'] && $cars){
+            foreach($cars as $key=>$car){
+                $user = UserModel::findOneBy('id', $car->user);
+                if($user){
+                    $cars[$key]->user = $user->last_name . ' ' . $user->first_name;
+                }else{
+                    $cars[$key]->user = "Senki";
+                }
 
+            }
         }
 
         // load views
@@ -97,6 +99,11 @@ class car extends Controller
 
         $car = new CarModel($res);
 
+        if(isset($_SESSION['admin'])){
+            require APP . "model/user.php";
+            $users = UserModel::findAll(['id', 'last_name', 'first_name']);
+        }
+
         if(isset($_POST['submit_editCar'])){
             $car
                 ->setBrand($_POST['brand'])
@@ -104,6 +111,7 @@ class car extends Controller
                 ->setKilometers($_POST['kilometers'])
                 ->setYear($_POST['year'])
                 ->setStatus(isset($_POST['status']))
+                ->setUser(isset($_POST['user'])?$_POST['user']:$_SESSION['userId'])
             ;
 
             $car->update();
@@ -112,7 +120,11 @@ class car extends Controller
 
 
         // load views
-        require APP . 'view/_templates/user_header.php';
+        if($_SESSION['admin']){
+            require APP . 'view/_templates/admin_header.php';
+        }else{
+            require APP . 'view/_templates/user_header.php';
+        }
         require APP . 'view/car/edit.php';
         require APP . 'view/_templates/footer.php';
     }

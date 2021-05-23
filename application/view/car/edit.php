@@ -43,12 +43,30 @@
         </div>
 
         <div class="row">
-            <h2>Státusz</h2>
-            <label class="switch">
-                <input type="checkbox" name="status" <?php if($car->isActive()){ ?> checked <?php } ?>>
-                <span class="slider round"></span>
-            </label>
+            <div class="col-3">
+                <h2>Státusz</h2>
+            </div>
+
+            <div class="col-3">
+                <label class="switch">
+                    <input type="checkbox" name="status" <?php if($car->isActive()){ ?> checked <?php } ?>>
+                    <span class="slider round"></span>
+                </label>
+            </div>
         </div>
+
+        <?php if($_SESSION['admin']){ ?>
+            <div class="row">
+                <div class="col-6">
+                    <label for="user">Autó használója</label>
+                    <select class="custom-select d-block col-md-10" name="user" id="user">
+                        <?php foreach($users as $user){ ?>
+                            <option value="<?php echo $user->id ?>" <?php if($car->getUser() == $user->id){ ?>selected<?php } ?>><?php echo $user->last_name ?> <?php echo $user->first_name ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+        <?php } ?>
 
         <hr class="mb-4">
 

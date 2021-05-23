@@ -37,13 +37,19 @@
         </div>
 
         <div class="row">
-            <h2>Státusz</h2>
-            <label class="switch">
-                <input type="checkbox" name="status" checked>
-                <span class="slider round"></span>
-            </label>
+            <div class="col-3">
+                <h2>Státusz</h2>
+            </div>
+
+            <div class="col-3">
+                <label class="switch">
+                    <input type="checkbox" name="status" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
         </div>
 
+        <?php if($_SESSION['admin']){ ?>
         <div class="col-md-6 mb-3">
             <label for="user">Autó használója</label>
             <select class="custom-select d-block col-md-10" name="user" id="user">
@@ -56,6 +62,7 @@
                 ?>
             </select>
         </div>
+        <?php } ?>
 
         <hr class="mb-4">
 

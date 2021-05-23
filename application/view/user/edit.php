@@ -105,19 +105,29 @@
         ?>
 
         <div class="row">
-            <h2>Admin</h2>
-            <label class="switch">
-                <input type="checkbox" name="admin" <?php if($user->isAdmin()){ ?> checked <?php } ?>>
-                <span class="slider round"></span>
-            </label>
+            <div class="col-3">
+                <h2>Admin</h2>
+            </div>
+
+            <div class="col">
+                <label class="switch">
+                    <input type="checkbox" name="admin" <?php if($user->isAdmin()){ ?> checked <?php } ?>>
+                    <span class="slider round"></span>
+                </label>
+            </div>
         </div>
 
         <div class="row">
-            <h2>Státusz</h2>
-            <label class="switch">
-                <input type="checkbox" name="status" <?php if($user->isActive()){ ?> checked <?php } ?>>
-                <span class="slider round"></span>
-            </label>
+            <div class="col-3">
+                <h2>Státusz</h2>
+            </div>
+
+            <div class="col">
+                <label class="switch">
+                    <input type="checkbox" name="status" <?php if($user->isActive()){ ?> checked <?php } ?>>
+                    <span class="slider round"></span>
+                </label>
+            </div>
         </div>
 
         <hr class="mb-4">
