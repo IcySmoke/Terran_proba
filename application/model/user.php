@@ -92,7 +92,7 @@ class UserModel
             ':pass' => $this->pass,
             ':admin' => 0,
             ':status' => 1,
-            ':created_at' => date("Y-m-d h:i:s"),
+            ':created_at' => date("Y-m-d H:i:s"),
         ];
 
         $res = $query->execute($parameters);
@@ -115,7 +115,7 @@ class UserModel
             ':phone' => $this->phone,
             ':admin' => $this->admin,
             ':status' => $this->status,
-            ':updated_at' => date("Y-m-d h:i:s"),
+            ':updated_at' => date("Y-m-d H:i:s"),
             'id' => $this->id,
         ];
 

@@ -97,7 +97,7 @@ class CarModel
             ':year' => $this->year,
             ':status' => $this->status,
             ':user' => $this->user,
-            ':created_at' => date("Y-m-d h:i:s"),
+            ':created_at' => date("Y-m-d H:i:s"),
         ];
 
         return $query->execute($parameters);
@@ -118,7 +118,7 @@ class CarModel
             ':year' => $this->year,
             ':status' => $this->status,
             ':user' => $this->user,
-            ':updated_at' => date("Y-m-d h:i:s"),
+            ':updated_at' => date("Y-m-d H:i:s"),
             'id' => $_GET['id'],
         ];
 
