@@ -1,13 +1,29 @@
-<div class="card text-white bg-secondary m-3" style="width: 19rem;">
+<div class="card text-white bg-secondary m-3" style="width: 30rem;">
     <div class="card-header">
-        <h5 class="card-title"><?= $user->last_name ?> <?= $user->first_name ?></h5>
+        <div class="row">
+            <h3 class="col"><?php echo $user->last_name ?> <?php echo $user->first_name ?></h3>
+        </div>
     </div>
     <div class="card-body">
-        <h5 class="card-title"><?= $user->email ?></h5>
-        <h5 class="card-title"><?php if($user->admin){ ?>admin<?php }else{ ?>nem admin<?php } ?></h5>
-        <h5 class="card-title"><?php if($user->status){ ?>aktív<?php }else{ ?>inaktív<?php } ?></h5>
-        <a href="<?php echo URL; ?>user/edit?id=<?php echo $user->id ?>">
-            <button type="button" class="btn btn-light">Részletek</button>
-        </a>
+
+        <div class="row mb-1">
+            <h5 class="col-3">E-mail:</h5>
+            <h5 class="col-9"><?php echo $user->email ?></h5>
+        </div>
+
+        <div class="row mb-1">
+            <h5 class="col-3">Admin:</h5>
+            <h5 class="col-9"><?php if($user->admin){ ?>igen<?php }else{ ?>nem<?php } ?></h5>
+        </div>
+
+        <div class="row mb-1">
+            <h5 class="col-3">Atátusz:</h5>
+            <h5 class="col-9"><?php if($user->status){ ?>aktív<?php }else{ ?>inaktív<?php } ?></h5>
+        </div>
+
+        <div class="row mx-auto">
+            <a href="<?php echo URL; ?>user/edit?id=<?php echo $user->id ?>" class="btn btn-light btn-lg" >Részletek</a>
+        </div>
+
     </div>
 </div>

@@ -12,8 +12,8 @@
 </head>
 <body>
 
-    <div class="d-flex p-3 mx-auto flex-column" style="max-height: 100px;">
-        <div class="cover-container d-flex p-3 mx-auto flex-column col-xl-12">
+    <div class="d-flex p-3 mx-auto flex-column"">
+        <div class="cover-container d-flex p-3 mx-auto flex-column col-xl-12" style="max-height: 100px;>
             <header class="masthead">
                 <div class="inner">
                     <h3 class="masthead-brand">Flotta</h3>

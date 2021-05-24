@@ -1,4 +1,4 @@
-<div  class="container container">
+<div class="container">
 
     <div class="row">
         <div class="col mb-3">
@@ -30,7 +30,7 @@
             if($_SESSION['admin']){
                 ?>
                 <div class="col-3 mb-3">
-                    <label for="user">Autó használója</label>
+                    <label for="user">Munkatárs</label>
                     <select class="custom-select d-block col-md-10" name="filter_user" id="user">
                         <option value="0">Mindenki</option>
                         <?php
