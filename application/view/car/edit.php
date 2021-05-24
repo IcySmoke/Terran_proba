@@ -30,6 +30,19 @@
             <input type="text" class="form-control" name="plate" id="plate" placeholder="ABC-123" value="<?php echo $car->getPlate() ?>" required>
         </div>
 
+        <?php
+        if(isset($_SESSION['editCar_error']['invalid_plate'])){
+            if($_SESSION['editCar_error']['invalid_plate']){
+                ?>
+                <div class="alert alert-danger" role="alert">
+                    Hibás rendszám formátum.
+                </div>
+                <?php
+                unset($_SESSION['editCar_error']['invalid_plate']);
+            }
+        }
+        ?>
+
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label for="kilometers">Km óra állás</label>
@@ -42,12 +55,27 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-3">
+        <?php
+        if(isset($_SESSION['editCar_error']['invalid_year'])){
+            if($_SESSION['editCar_error']['invalid_year']){
+                ?>
+                <div class="row float-right">
+                    <div class="col-11 alert alert-danger" style="width: 270px" role="alert">
+                        Érvénytelen év.
+                    </div>
+                </div>
+                <?php
+                unset($_SESSION['editCar_error']['invalid_year']);
+            }
+        }
+        ?>
+
+        <div class="row col-6 mr-0">
+            <div class="col-6">
                 <h2>Státusz</h2>
             </div>
 
-            <div class="col-3">
+            <div class="col-6">
                 <label class="switch">
                     <input type="checkbox" name="status" <?php if($car->isActive()){ ?> checked <?php } ?>>
                     <span class="slider round"></span>
@@ -56,15 +84,13 @@
         </div>
 
         <?php if($_SESSION['admin']){ ?>
-            <div class="row">
-                <div class="col-6">
-                    <label for="user">Autó használója</label>
-                    <select class="custom-select d-block col-md-10" name="user" id="user">
-                        <?php foreach($users as $user){ ?>
-                            <option value="<?php echo $user->id ?>" <?php if($car->getUser() == $user->id){ ?>selected<?php } ?>><?php echo $user->last_name ?> <?php echo $user->first_name ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
+            <div class="col-md-6 mb-3">
+                <label for="user">Autó használója</label>
+                <select class="custom-select d-block col-md-10" name="user" id="user">
+                    <?php foreach($users as $user){ ?>
+                        <option value="<?php echo $user->id ?>" <?php if($car->getUser() == $user->id){ ?>selected<?php } ?>><?php echo $user->last_name ?> <?php echo $user->first_name ?></option>
+                    <?php } ?>
+                </select>
             </div>
         <?php } ?>
 

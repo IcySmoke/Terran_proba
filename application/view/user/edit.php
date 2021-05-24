@@ -104,6 +104,32 @@
         }
         ?>
 
+        <?php
+        if(isset($_SESSION['edit_form_error']['password_tooShort'])){
+            if($_SESSION['edit_form_error']['password_tooShort']){
+                ?>
+                <div class="alert alert-danger" role="alert">
+                    A jelszó túl rövid.
+                </div>
+                <?php
+                unset($_SESSION['edit_form_error']['password_tooShort']);
+            }
+        }
+        ?>
+
+        <?php
+        if(isset($_SESSION['edit_form_error']['password_tooLong'])){
+            if($_SESSION['edit_form_error']['password_tooLong']){
+                ?>
+                <div class="alert alert-danger" role="alert">
+                    A jelszó túl hosszú.
+                </div>
+                <?php
+                unset($_SESSION['edit_form_error']['password_tooLong']);
+            }
+        }
+        ?>
+
         <div class="row">
             <div class="col-3">
                 <h2>Admin</h2>

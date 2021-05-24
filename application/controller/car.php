@@ -105,16 +105,30 @@ class car
         }
 
         if(isset($_POST['submit_editCar'])){
-            $car
-                ->setBrand($_POST['brand'])
-                ->setPlate($_POST['plate'])
-                ->setKilometers($_POST['kilometers'])
-                ->setYear($_POST['year'])
-                ->setStatus(isset($_POST['status']))
-                ->setUser(isset($_POST['user'])?$_POST['user']:$_SESSION['userId'])
-            ;
 
-            $car->update();
+            $_SESSION['editCar_error'] = null;
+
+            $_POST['plate'] = strtoupper($_POST['plate']);
+            if(!preg_match("/^[A-Z]{3}[\-][0-9]{3}\$/", $_POST['plate'])){
+                $_SESSION['editCar_error']['invalid_plate'] = true;
+            }
+
+            if($_POST['year'] > date("Y")){
+                $_SESSION['editCar_error']['invalid_year'] = true;
+            }
+
+            if($_SESSION['editCar_error'] == null){
+                $car
+                    ->setBrand($_POST['brand'])
+                    ->setPlate($_POST['plate'])
+                    ->setKilometers($_POST['kilometers'])
+                    ->setYear($_POST['year'])
+                    ->setStatus(isset($_POST['status']))
+                    ->setUser(isset($_POST['user'])?$_POST['user']:$_SESSION['userId'])
+                ;
+
+                $car->update();
+            }
         }
 
 
@@ -144,7 +158,8 @@ class car
 
             $_SESSION['newCar_error'] = null;
 
-            if(strlen($_POST['plate']) != 7){
+            $_POST['plate'] = strtoupper($_POST['plate']);
+            if(!preg_match("/^[A-Z]{3}[\-][0-9]{3}\$/", $_POST['plate'])){
                 $_SESSION['newCar_error']['invalid_plate'] = true;
             }
 

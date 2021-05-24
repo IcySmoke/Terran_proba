@@ -75,6 +75,15 @@ class CarModel
         }
     }
 
+    /**
+     * @param $barnd
+     * @param $plate
+     * @param $kilometers
+     * @param $year
+     * @param $status
+     * @param $user
+     * @return bool
+     */
     public function newCar($barnd, $plate, $kilometers, $year, $status, $user){
 
         $this->setBrand($barnd);
@@ -103,6 +112,9 @@ class CarModel
         return $query->execute($parameters);
     }
 
+    /**
+     * @return bool
+     */
     public function update(){
         $db = $this->connect();
         $sql = "UPDATE car
@@ -126,6 +138,9 @@ class CarModel
 
     }
 
+    /**
+     * @param $id
+     */
     public static function delete($id){
         $db = self::connect();
         $sql = "DELETE FROM car WHERE id = :id";

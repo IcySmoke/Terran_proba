@@ -5,12 +5,12 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label for="lastName">Vezetéknév</label>
-                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="vezetéknév" required>
+                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="vezetéknév" value="<?php echo isset($_POST['lastName'])?$_POST['lastName']:'' ?>" required>
             </div>
 
             <div class="col-md-6 mb-3">
                 <label for="firstName">Keresztnév</label>
-                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="keresztnév" required>
+                <input type="text" class="form-control" name="firstName" id="firstName" placeholder="keresztnév" value="<?php echo isset($_POST['lastName'])?$_POST['firstName']:'' ?>" required>
             </div>
         </div>
         <?php
@@ -40,7 +40,7 @@
 
         <div class="mb-3">
             <label for="email">Email</label>
-            <input type="email" class="form-control" name="email" id="email" placeholder="valami@doamin.com">
+            <input type="email" class="form-control" name="email" id="email" placeholder="valami@doamin.com" value="<?php echo isset($_POST['email'])?$_POST['email']:'' ?>" required>
             <small id="emailHelp" class="form-text text-muted">Az e-mail címedet nem adjuk ki senkinek.</small>
         </div>
         <?php
@@ -70,7 +70,7 @@
 
         <div class="mb-3">
             <label for="phone">Telefonszám</label>
-            <input type="tel" class="form-control" name="phone" id="phone" placeholder="+36301234567">
+            <input type="tel" class="form-control" name="phone" id="phone" placeholder="+36301234567" value="<?php echo isset($_POST['phone'])?$_POST['phone']:'' ?>" required>
         </div>
 
         <div class="row">
@@ -97,6 +97,32 @@
                 </div>
                 <?php
                 unset($_SESSION['register_form_error']['passwords_missmatch']);
+            }
+        }
+        ?>
+
+        <?php
+        if(isset($_SESSION['register_form_error']['password_tooShort'])){
+            if($_SESSION['register_form_error']['password_tooShort']){
+                ?>
+                <div class="alert alert-danger" role="alert">
+                    A jelszó túl rövid.
+                </div>
+                <?php
+                unset($_SESSION['register_form_error']['password_tooLong']);
+            }
+        }
+        ?>
+
+        <?php
+        if(isset($_SESSION['register_form_error']['password_tooLong'])){
+            if($_SESSION['register_form_error']['password_tooLong']){
+                ?>
+                <div class="alert alert-danger" role="alert">
+                    A jelszó túl hosszú.
+                </div>
+                <?php
+                unset($_SESSION['register_form_error']['password_tooLong']);
             }
         }
         ?>

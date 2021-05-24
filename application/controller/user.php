@@ -7,7 +7,7 @@ class user
 {
     /**
      * PAGE: login
-     * route: /user/login
+     * route: /
      */
     public function login()
     {
@@ -52,7 +52,7 @@ class user
 
         if(isset($_POST['submit_register'])){
             require APP . "model/user.php";
-            $_SESSION['register_form_error'] = null;
+            $_SESSION['register_form_error'] = [];
 
             if(!isset($_POST['firstName'])) if($_POST['firstName'] == ''){
                 $_SESSION['register_form_error']['firstName_missing'] = true;
@@ -75,25 +75,36 @@ class user
                 }
             }
 
-            //TODO phone regex check in else statement
             if(!isset($_POST['phone'])){
                 $_SESSION['register_form_error']['phone_missing'] = true;
             }
 
-            //TODO password check
             if(!isset($_POST['password'])){
                 $_SESSION['register_form_error']['password_missing'] = true;
             }elseif(!isset($_POST['passwordAgain'])){
                 $_SESSION['register_form_error']['passwordAgain_missing'] = true;
             }elseif($_POST['password'] != $_POST['passwordAgain']){
                 $_SESSION['register_form_error']['passwords_missmatch'] = true;
+            }else{
+                switch($this->passCeck($_POST['password'])){
+                    case 1:
+                        $_SESSION['register_form_error']['password_tooShort'] = true;
+                        break;
+
+                    case 2:
+                        $_SESSION['register_form_error']['password_tooLong'] = true;
+                        break;
+
+                    default:
+                        break;
+                }
             }
 
             if(!isset($_POST['terms'])){
                 $_SESSION['register_form_error']['terms_unchecked'] = true;
             }
 
-            if($_SESSION['register_form_error'] == null){
+            if($_SESSION['register_form_error'] == []){
                 $user = new UserModel();
 
                 $res = $user->newUser($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['phone'], $_POST['password']);
@@ -177,8 +188,6 @@ class user
 
         $user = new UserModel($user);
 
-        //TODO password and e-mail check
-
         if(isset($_POST['submit_editUser'])){
 
             $_SESSION['edit_form_error'] = null;
@@ -200,7 +209,29 @@ class user
                 if(isset($_POST['passwordAgain'])){
                     if($_POST['password'] == $_POST['passwordAgain']){
                         if($_POST['password'] != ''){
-                            $user->updatePass($_POST['password']);
+                            if(!isset($_POST['password'])){
+                                $_SESSION['edit_form_error']['password_missing'] = true;
+                            }elseif(!isset($_POST['passwordAgain'])){
+                                $_SESSION['edit_form_error']['passwordAgain_missing'] = true;
+                            }elseif($_POST['password'] != $_POST['passwordAgain']){
+                                $_SESSION['edit_form_error']['passwords_missmatch'] = true;
+                            }else{
+                                switch($this->passCeck($_POST['password'])){
+                                    case 0:
+                                        $user->updatePass($_POST['password']);
+                                        break;
+                                    case 1:
+                                        $_SESSION['edit_form_error']['password_tooShort'] = true;
+                                        break;
+
+                                    case 2:
+                                        $_SESSION['edit_form_error']['password_tooLong'] = true;
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+                            }
                         }
                     }else{
                         $_SESSION['edit_form_error']['passwords_missmatch'] = true;
@@ -286,14 +317,22 @@ class user
             ]
         );
 
-//        if($cars){
-//            var_dump($user->first_name . "-hez tartozik " . count($cars) . "db autó!"); exit;
-//        }
-
         UserModel::delete($user->id);
 
         header('location: ' . URL . 'user');
 
+    }
+
+    private function passCeck($pass){
+        $return = [];
+        if(strlen($pass) < 6){
+            return 1;
+        }
+        if(strlen($pass) > 20){
+            $return['password_tooLong'] = true;
+            return 2;
+        }
+        return 0;
     }
 
 }
